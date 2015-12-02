@@ -102,6 +102,7 @@ WARNING
         build_bundler
         post_bundler
         create_database_yml
+        create_secrets_yml
         install_binaries
         run_assets_precompile_rake_task
       end
@@ -688,6 +689,10 @@ ERROR
         ""
       end
     end
+  end
+
+  def create_secrets_yml
+    system "cp config/secrets.example.yml config/secrets.yml"
   end
 
   # writes ERB based database.yml for Rails. The database.yml uses the DATABASE_URL from the environment during runtime.
