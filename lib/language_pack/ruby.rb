@@ -692,7 +692,11 @@ ERROR
   end
 
   def create_secrets_yml
-    system "cp config/secrets.example.yml config/secrets.yml"
+    instrument 'ruby.create_secrets_yml' do
+      return false unless File.directory?("config")
+      topic("Writing config/secrets.yml from config/secrets.example.yml")
+      system "cp config/secrets.example.yml config/secrets.yml"
+    end
   end
 
   # writes ERB based database.yml for Rails. The database.yml uses the DATABASE_URL from the environment during runtime.
