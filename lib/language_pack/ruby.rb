@@ -851,6 +851,22 @@ params = CGI.parse(uri.query || "")
     end
   end
 
+  def run_webpack_compile_rake_task
+    instrument 'ruby.run_webpack_compile_rake_task' do
+
+      compile = rake.task("webpack:compile")
+      return true unless compile.is_defined?
+
+      topic "Compiling webpack"
+      compile.invoke(env: rake_env)
+      if compile.success?
+        puts "Webpack precompilation completed (#{"%.2f" % compile.time}s)"
+      else
+        precompile_fail(compile.output)
+      end
+    end
+  end
+
   def precompile_fail(output)
     log "assets_precompile", :status => "failure"
     msg = "Precompiling assets failed.\n"
