@@ -104,8 +104,8 @@ WARNING
         create_database_yml
         create_secrets_yml
         install_binaries
-        run_assets_precompile_rake_task
         run_webpack_compile_rake_task
+        run_assets_precompile_rake_task
       end
       best_practice_warnings
       super
