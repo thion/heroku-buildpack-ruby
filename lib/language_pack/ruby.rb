@@ -108,6 +108,7 @@ WARNING
         run_webpack_compile_rake_task
       end
       best_practice_warnings
+      run_migrations
       super
     end
   end
@@ -697,6 +698,21 @@ ERROR
       return false unless File.directory?("config")
       topic("Writing config/secrets.yml from config/secrets.example.yml")
       system "cp config/secrets.example.yml config/secrets.yml"
+    end
+  end
+
+  def run_migrations
+    instrument 'ruby.run_migrations' do
+      migrations = rake.task("db:migrate")
+      return true unless migrations.is_defined?
+
+      topic "Running migrations"
+      migrations.invoke(env: rake_env)
+      if migrations.success?
+        puts "Database migrated (#{"%.2f" % migrations.time}s)"
+      else
+        puts "Migration failed"
+      end
     end
   end
 
