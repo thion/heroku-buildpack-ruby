@@ -106,6 +106,7 @@ WARNING
         install_binaries
         run_assets_precompile_rake_task
         run_webpack_compile_rake_task
+        generate_sitemap
       end
       best_practice_warnings
       run_migrations
@@ -713,6 +714,16 @@ ERROR
       else
         puts "Migration failed"
       end
+    end
+  end
+
+  def generate_sitemap
+    instrument 'ruby.generate_sitemap' do
+      sitemap = rake.task("sitemap:generate")
+      return true unless sitemap.is_defined?
+
+      topic "Generating the sitemap"
+      sitemap.invoke(env: rake_env)
     end
   end
 
