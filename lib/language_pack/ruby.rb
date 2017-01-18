@@ -102,7 +102,6 @@ WARNING
         build_bundler
         post_bundler
         create_database_yml
-        create_secrets_yml
         install_binaries
         run_assets_precompile_rake_task
         run_webpack_compile_rake_task
@@ -699,14 +698,6 @@ https://devcenter.heroku.com/articles/ruby-versions#your-ruby-version-is-x-but-y
       else
         ""
       end
-    end
-  end
-
-  def create_secrets_yml
-    instrument 'ruby.create_secrets_yml' do
-      return false unless File.directory?("config")
-      topic("Writing config/secrets.yml from config/secrets.example.yml")
-      system "cp config/secrets.example.yml config/secrets.yml"
     end
   end
 
